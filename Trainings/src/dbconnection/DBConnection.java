@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -111,7 +112,7 @@ public class DBConnection {
             	query = "INSERT INTO training(userid,Start,Stop) VALUES('"+id+"',NOW(), NOW()+INTERVAL 30 MINUTE)";
             	 current1 = new Timestamp(date.getTime());
                  current1.setMinutes(current.getMinutes()+30);
-            	train="User with id:" +id+" added train From:"+current+" To:"+current1;
+            	 train="User with id:" +id+" added train From:"+current+" To:"+current1;
                 System.out.println(query);
             }
          
@@ -162,7 +163,7 @@ public class DBConnection {
             
 				try {
 					dbConn = DBConnection.createConnection();
-					String query = "SELECT COUNT(*) AS count FROM training WHERE id='"+id+"' AND (time_to_sec(timediff(NOW(),(SELECT stop FROM training WHERE id='"+id+"' ORDER BY stop DESC LIMIT 4) )) / 3600)>1.5 ";
+					String query = "SELECT COUNT(*) AS count FROM training WHERE userid='"+id+"' AND finishedtime='0000-00-00 00:00:00'";
 			         System.out.println(query);
 			         Statement stmt = dbConn.createStatement();
 			         ResultSet rs = stmt.executeQuery(query);
@@ -178,18 +179,33 @@ public class DBConnection {
 				 
     	return i;
     }
-    public static void Session(String name, HttpSession session){
+    
+    public static HashMap<String,Timestamp> getStartStop(int id){
+    	
+    	HashMap<String,Timestamp> map= new HashMap<String,Timestamp>();
     	Connection dbConn = null;
     	try {
 			dbConn = DBConnection.createConnection();
-			String query = "INSERT INTO sesmana(name,sessionid) VALUES('"+name+"','"+session+"') ";
+			String query = "SELECT start,stop FROM training WHERE userid='"+id+"' AND finishedtime='0000-00-00 00:00:00'";
 	         System.out.println(query);
 	         Statement stmt = dbConn.createStatement();
-	          stmt.executeUpdate(query);
+	         ResultSet rs = stmt.executeQuery(query);
+	         int i =0;
+	         while(rs.next()){
+	        	 System.out.println("inside while");
+	        	 map.put("start"+i, rs.getTimestamp("start"));
+	        	 map.put("stop"+i, rs.getTimestamp("stop"));
+
+	             
+	        	 i++;
+	         }
+	        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	return map;
 		
     }
+   
 }

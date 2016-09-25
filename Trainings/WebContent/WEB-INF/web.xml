@@ -33,6 +33,16 @@
     <servlet-name>Trainings</servlet-name>  
     <url-pattern>/Trainings</url-pattern>  
   </servlet-mapping>  
+  <servlet>  
+    <description></description>  
+    <display-name>AddTrainings</display-name>  
+    <servlet-name>AddTrainings</servlet-name>  
+    <servlet-class>servlets.AddTrainings</servlet-class>  
+  </servlet>  
+  <servlet-mapping>  
+    <servlet-name>AddTrainings</servlet-name>  
+    <url-pattern>/AddTrainings</url-pattern>  
+  </servlet-mapping> 
  <listener>
         <listener-class>servlets.SessionListener</listener-class>
     </listener>

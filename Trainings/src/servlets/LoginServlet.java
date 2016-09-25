@@ -37,10 +37,9 @@ package servlets;
 			}
             if(!i.equals("-1")){  
             	
-            out.print("Welcome, "+name+"\n");  
-           // request.setAttribute("start", "servletToJsp");
-            //request.setAttribute("stop", "servletToJsp");
-            request.getRequestDispatcher("link.jsp").include(request, response);  
+            session.setAttribute("id", i);
+            
+            request.getRequestDispatcher("/Trainings").include(request, response);  
           
           
               
