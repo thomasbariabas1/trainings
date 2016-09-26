@@ -1,5 +1,5 @@
 <%@page import="java.util.*"%>
-
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@page language="java" session="true" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 
   <!DOCTYPE html>
@@ -14,6 +14,7 @@
     
     	var data = [];
     	var data2 = [];
+    	var data3 = [];
     	<% int k =  (int)session.getAttribute("arithmos");%>
     	
     	<% for(int i = 0;i<k;i++) { %>
@@ -21,13 +22,13 @@
 
     	data[<%= i %>] = ['<%= session.getAttribute("start"+i) %>','<%= session.getAttribute("stop"+i) %>'];
     	data2[<%= i %>] = ['<%= session.getAttribute("rand"+i) %>'];
-    	
+    	data3[<%= i %>] = ['<%= session.getAttribute("id"+i) %>'];
     	
     	<%  } %>
     	
     	
     	
-    	var html = '<table><thead><tr></tr></thead><tbody>';
+    	var html = '<table><thead><tr></tr>Progrmmatismenes proponiseis omadas</thead><tbody>';
     	for (var i = 0, len = data.length; i < len; ++i) {
     	    html += '<tr><td><form action="CancelServlet" method="post"><a href=#>'+data2[i]+'</a></td>';
     	    for (var j = 0, rowLen = data[i].length; j < rowLen; ++j ) {
@@ -35,7 +36,7 @@
     	        html +=  data[i][j] ;
     	        html += '</td>';
     	    }
-    	    html += '<td><input type="submit" value="Akirosi" name="submit"></form></td></tr>';
+    	    html += '<td><input type="submit" value="Akirosi" name="'+data3[i]+'"></form></td></tr>';
     	}
     	html += '</tbody><tfoot><tr></tr></tfoot></table>';
 

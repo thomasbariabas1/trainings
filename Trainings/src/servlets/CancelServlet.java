@@ -18,8 +18,9 @@ public class CancelServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {
-			System.out.println("ddddddd");
+		
 		 DBConnection.lasttime(Integer.parseInt(LoginServlet.i));
 		 System.out.println(request.getParameterNames().nextElement());
+		 DBConnection.cancelTrain(Integer.parseInt(LoginServlet.i), Integer.parseInt(request.getParameterNames().nextElement()));
 	}
 }

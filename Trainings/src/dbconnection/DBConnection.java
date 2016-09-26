@@ -237,20 +237,19 @@ public class DBConnection {
     	return map;
 		
     }
-    public void cancelTrain(int id){
+    
+   
+    public static void cancelTrain(int userid,int id){
     	Connection dbConn = null;
     	try {
 			dbConn = DBConnection.createConnection();
-			String query = "UPDATE trainings SET finishedtime=NOW() WHERE userid='"+id+"'";
-	         System.out.println(query);
-	         Statement stmt = dbConn.createStatement();
-	         ResultSet rs = stmt.executeQuery(query);
+			System.out.println(id);
+		//	String query = "UPDATE trainings SET finishedtime=NOW() WHERE userid='"+userid+"' AND id='"+id+"'";
+	       //  System.out.println(query);
+	        // Statement stmt = dbConn.createStatement();
+	       //   stmt.executeUpdate(query);
 	        
-	         while(rs.next()){
-	        	 System.out.println("inside while");
-	        	
-	           
-	         }
+	       
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -281,7 +280,7 @@ public class DBConnection {
     
 			try {
 				dbConn = DBConnection.createConnection();
-				String query = "SELECT tuxaiosarithmos FROM training WHERE userid='"+id+"' AND finishedtime='0000-00-00 00:00:00'";
+				String query = "SELECT id,tuxaiosarithmos FROM training WHERE userid='"+id+"' AND finishedtime='0000-00-00 00:00:00'";
 		         System.out.println(query);
 		         Statement stmt = dbConn.createStatement();
 		         ResultSet rs = stmt.executeQuery(query);
@@ -290,7 +289,7 @@ public class DBConnection {
 		        	 System.out.println("inside while");
 		        	 
 		        	 map.put("tuxaiosarithmos"+i, rs.getInt("tuxaiosarithmos"));
-		             
+		             map.put("id"+i, rs.getInt("id"));
 		        	 i++;
 		         }
 			} catch (Exception e) {
