@@ -28,7 +28,7 @@ public class DBConnection {
      * @return
      * @throws Exception
      */
-    
+    //CONNECTION TO DB
     @SuppressWarnings("finally")
 	public static Connection createConnection() throws Exception {
         Connection con = null;
@@ -51,6 +51,7 @@ public class DBConnection {
      * @return
      * @throws Exception
      */
+    //AUTHENTICATION WITH DB
     public static int CheckInfo(String name, String password) throws Exception {
        
         Connection dbConn = null;
@@ -91,7 +92,7 @@ public class DBConnection {
     }
     
 	
-    
+    //INSERT TRAINING+COUNT TRAINING+CREATING EVENTS
 	public static String addtrain(int id,int counter) throws Exception {
     	 Connection dbConn = null;
     	 Timestamp d;
@@ -168,6 +169,8 @@ public class DBConnection {
      }
     	 return train;
     }
+	
+	//GET THE PREVIOUS FROM LAST TRAINING
     public static Timestamp getPrevious(int id){
     	Connection dbConn = null;
     	Timestamp d = null ;
@@ -190,6 +193,8 @@ public class DBConnection {
        
     	return d;
     }
+    
+    //COUNTER FOR ACTIVE TRAININGS
     public static int getTrainings(int id){
     	Connection dbConn = null;
     	
@@ -214,6 +219,7 @@ public class DBConnection {
     	return i;
     }
     
+    //GETTER FOR START AND STOP TIMES FROM TRAININGS FOR IMPUT USERS
     public static HashMap<String,Timestamp> getStartStop(int id){
     	
     	HashMap<String,Timestamp> map= new HashMap<String,Timestamp>();
@@ -243,6 +249,7 @@ public class DBConnection {
     }
     
    
+    //CANCEL TRAINING AFTER INKOKING SERVLET
     public static void cancelTrain(int userid,int trainid){
     	ArrayList<Integer> id=new ArrayList<Integer>();
     	ArrayList<Timestamp> start = new ArrayList<Timestamp>();
@@ -272,6 +279,9 @@ public class DBConnection {
 		
     	
 }
+    
+    
+    //KEEPER FOR EACH INTERACTION USER MAKE WITH SERVICE
     public static void lasttime(int id){
     	Connection dbConn = null;
     
@@ -289,6 +299,8 @@ public class DBConnection {
 			}
     }
     
+    
+    //RETURN RANDOM WITH RANGE 1-1000
     public static HashMap<String,Integer> getRnd(int id){
     	HashMap<String,Integer> map= new HashMap<String,Integer>();
     	Connection dbConn = null;
@@ -311,12 +323,10 @@ public class DBConnection {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return map;
-			
-    
-  
+			return map;  
     }
   
+    //GET THE CORRENT POSISION OF THE DELETED TRAINING
     public static int getPosition(ArrayList<Integer> id,int trainid){
     	int k = id.size();
     	 System.out.println("inside GET POSITION"+k);
@@ -329,6 +339,7 @@ public class DBConnection {
 		 }
     	return 0;
     }
+    //RETURN USER ID WHILE SEARCHING WITH TRAINING ID
     public static int getUserID(int trainid) throws Exception{
     	Connection dbConn = null;
     
@@ -340,6 +351,9 @@ public class DBConnection {
 			rs.next();
 			return rs.getInt("userid");
     }
+    
+    
+    //FUNCTION FOR ALTERATION TABLE ON CANCEL INVOKED
     public static void alterTable(int pos,ArrayList<Timestamp> start,ArrayList<Timestamp> stop , ArrayList<Integer> id) throws Exception{
     	int temp = id.size();
     	Connection dbConn = null;
@@ -372,6 +386,8 @@ public class DBConnection {
       
     	
     }
+    
+    //SET THE TRAINING CANCELED ON DB
     public static void cancelTable(int id) throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
@@ -380,6 +396,8 @@ public class DBConnection {
 		Statement stmt = dbConn.createStatement();
 		stmt.executeUpdate(query);
     }
+    
+    //RETURN THE NUBER OF USERS
     public static int getUsers() throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
@@ -391,6 +409,8 @@ public class DBConnection {
 		int k = rs.getInt("count");
     	return k;
     }
+    
+    //RETURN THE NAME OF THE USER
     public static String getName(int id) throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
@@ -403,6 +423,7 @@ public class DBConnection {
     	
     	return s;
     }
+    //RETURN THE EMAIL OF THE USER
     public static String getEmail(int id) throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
@@ -415,6 +436,7 @@ public class DBConnection {
     	
     	return s;
     }
+    //RETURN THE COMPLETED TRAININGS OF THE USER
     public static int getCompleted(int id) throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
@@ -428,6 +450,7 @@ public class DBConnection {
     	
     	return s;
     }
+    //RETURN THE CANCELED TRANINGS OF THE USER
     public static int getNotcompleted(int id) throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
@@ -441,7 +464,7 @@ public class DBConnection {
     	
     	return s;
     }
-    
+    //RETURN THE LAST INTERACTION OF USER WITH THE SERVICE
     public static Timestamp getLastclick(int id) throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();

@@ -17,7 +17,7 @@
     	
     	<% for(int i = 1;i<k+1;i++) { %>
     	
-
+			alert('<%= session.getAttribute("completed"+i) %>');
     	data[<%= i %>] = ['<%= session.getAttribute("count"+i) %>','<%= session.getAttribute("name"+i) %>','<%= session.getAttribute("email"+i) %>','<%= session.getAttribute("completed"+i) %>','<%= session.getAttribute("notcompleted"+i) %>','<%= session.getAttribute("last"+i) %>'];
     	
     	<%  } %>
