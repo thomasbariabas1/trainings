@@ -2,9 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
-import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +11,11 @@ import javax.servlet.http.HttpSession;
 import dbconnection.DBConnection;
 
 public class ShowStatistics extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 809716386143051942L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {
 		
