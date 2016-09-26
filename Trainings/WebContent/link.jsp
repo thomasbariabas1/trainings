@@ -13,14 +13,14 @@
     $( document ).ready(function() {
     
     	var data = [];
-    	
+    	var data2 = [];
     	<% int k =  (int)session.getAttribute("arithmos");%>
     	
     	<% for(int i = 0;i<k;i++) { %>
     	
 
     	data[<%= i %>] = ['<%= session.getAttribute("start"+i) %>','<%= session.getAttribute("stop"+i) %>'];
-    	
+    	data2[<%= i %>] = ['<%= session.getAttribute("rand"+i) %>'];
     	
     	
     	<%  } %>
@@ -29,7 +29,7 @@
     	
     	var html = '<table><thead><tr></tr></thead><tbody>';
     	for (var i = 0, len = data.length; i < len; ++i) {
-    	    html += '<tr><td><form><a href=#>kwdikos</a></td>';
+    	    html += '<tr><td><form action="/CancelServlet" method="post"><a href=#>'+data2[i]+'</a></td>';
     	    for (var j = 0, rowLen = data[i].length; j < rowLen; ++j ) {
     	    	html += '<td>';
     	        html +=  data[i][j] ;
@@ -47,19 +47,17 @@
 
 <body>
 <div id="div1"></div>
- <form action="Trainings" method="post" >
-        
-      
-        <input  type="submit"  value="submit" name="submit">
+<div>
+<form action="AddTrainings" method="post" >
+       <input  type="submit"  value="submitTrain" name="submitt">
     </form>
-
-<p></p>
-  
-<p></p>
-<form  action="Disconnected" method="post">
-  <input type="submit" value="logout" >
-</form> 
-   
+    <form action="Trainings" method="post" >
+       <input  type="submit"  value="submit" name="submit">
+    </form>
+    <form  action="Disconnected" method="post">
+       <input type="submit" value="logout" >
+    </form> 
+</div>  
   
   <h1>You can have only 4 active Trainings</h1>
 

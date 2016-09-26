@@ -43,6 +43,16 @@
     <servlet-name>AddTrainings</servlet-name>  
     <url-pattern>/AddTrainings</url-pattern>  
   </servlet-mapping> 
+    <servlet>  
+    <description></description>  
+    <display-name>CancelServlet</display-name>  
+    <servlet-name>CancelServlet</servlet-name>  
+    <servlet-class>servlets.CancelServlet</servlet-class>  
+  </servlet>  
+  <servlet-mapping>  
+    <servlet-name>CancelServlet</servlet-name>  
+    <url-pattern>/CancelServlet</url-pattern>  
+  </servlet-mapping> 
  <listener>
         <listener-class>servlets.SessionListener</listener-class>
     </listener>

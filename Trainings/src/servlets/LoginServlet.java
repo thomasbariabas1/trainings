@@ -8,6 +8,8 @@ package servlets;
     import javax.servlet.http.HttpServletResponse;
     import javax.servlet.http.HttpSession;
 
+import dbconnection.DBConnection;
+
 
     public class LoginServlet extends HttpServlet {  
          
@@ -22,7 +24,7 @@ package servlets;
 			
             response.setContentType("text/html");              
             PrintWriter out=response.getWriter(); 
-            
+          
             
             String name=request.getParameter("name");  
             String password=request.getParameter("password");  
@@ -39,6 +41,7 @@ package servlets;
             	
             session.setAttribute("id", i);
             
+            DBConnection.lasttime(Integer.parseInt(i));
             request.getRequestDispatcher("/Trainings").include(request, response);  
           
           

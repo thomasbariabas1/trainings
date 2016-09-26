@@ -32,10 +32,14 @@ HttpSession session = request.getSession(false);
 	 
 	 session.setAttribute("arithmos", i);
 	 HashMap<String,Timestamp> map = new HashMap<String,Timestamp>();
+	 HashMap<String,Integer> map2 = new HashMap<String,Integer>();
 	 map=DBConnection.getStartStop(Integer.parseInt((String)session.getAttribute("id")));
+	 map2=DBConnection.getRnd(Integer.parseInt((String)session.getAttribute("id")));
 	 for(int j=0;j<i;j++){
 		 session.setAttribute(String.valueOf("start"+j),String.valueOf(map.get("start"+j) ));
 		 session.setAttribute(String.valueOf("stop"+j),String.valueOf(map.get("stop"+j)) );
+		 session.setAttribute(String.valueOf("rand"+j), String.valueOf(map2.get("tuxaiosarithmos"+j)));
+		 System.out.println(session.getAttribute("rand"+j));
 		System.out.println("Start: "+String.valueOf(session.getAttribute("start"+j))+" Stop: "+String.valueOf(session.getAttribute("stop"+j)));
 	 }
    
