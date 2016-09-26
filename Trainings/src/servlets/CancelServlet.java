@@ -11,9 +11,15 @@ import dbconnection.DBConnection;
 
 public class CancelServlet extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2437966470702323986L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {
-
+			System.out.println("ddddddd");
 		 DBConnection.lasttime(Integer.parseInt(LoginServlet.i));
+		 System.out.println(request.getParameterNames().nextElement());
 	}
 }
