@@ -11,11 +11,6 @@ import dbconnection.DBConnection;
 
 public class AddTrainings extends HttpServlet {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -284873300221913604L;
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {
 		 DBConnection.lasttime(Integer.parseInt(LoginServlet.i));

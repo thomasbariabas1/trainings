@@ -40,7 +40,8 @@ HttpSession session = request.getSession(false);
 		 session.setAttribute(String.valueOf("stop"+j),String.valueOf(map.get("stop"+j)) );
 		 session.setAttribute(String.valueOf("rand"+j), String.valueOf(map2.get("tuxaiosarithmos"+j)));
 		 session.setAttribute(String.valueOf("id"+j), String.valueOf(map2.get("id"+j)));
-		
+		 System.out.println(session.getAttribute("rand"+j));
+		System.out.println("Start: "+String.valueOf(session.getAttribute("start"+j))+" Stop: "+String.valueOf(session.getAttribute("stop"+j)));
 	 }
    
      request.getRequestDispatcher("/link.jsp").include(request, response);
