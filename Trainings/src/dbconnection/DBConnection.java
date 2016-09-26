@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
@@ -240,10 +241,13 @@ public class DBConnection {
     
    
     public static void cancelTrain(int userid,int id){
+    	ArrayList<Integer> list=new ArrayList<Integer>();
+    	
     	Connection dbConn = null;
     	try {
 			dbConn = DBConnection.createConnection();
 			System.out.println(id);
+			String query="SELECT ";
 		//	String query = "UPDATE trainings SET finishedtime=NOW() WHERE userid='"+userid+"' AND id='"+id+"'";
 	       //  System.out.println(query);
 	        // Statement stmt = dbConn.createStatement();

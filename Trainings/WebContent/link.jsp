@@ -52,9 +52,7 @@
 <form action="AddTrainings" method="post" >
        <input  type="submit"  value="submitTrain" name="submitt">
     </form>
-    <form action="Trainings" method="post" >
-       <input  type="submit"  value="submit" name="submit">
-    </form>
+   
     <form  action="Disconnected" method="post">
        <input type="submit" value="logout" >
     </form> 
