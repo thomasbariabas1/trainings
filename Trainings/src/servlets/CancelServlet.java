@@ -22,7 +22,8 @@ public class CancelServlet extends HttpServlet {
 		 DBConnection.lasttime(Integer.parseInt(LoginServlet.i));
 		 System.out.println(request.getParameterNames().nextElement());
 		 DBConnection.cancelTrain(Integer.parseInt(LoginServlet.i), Integer.parseInt(request.getParameterNames().nextElement()));
-	
+	     
+		 request.getRequestDispatcher("/Trainings").include(request, response); 
 	
 	}
 }
