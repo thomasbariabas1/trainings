@@ -90,13 +90,10 @@ public class DBConnection {
     
 	
     
-	public static String addtrain(int id,int counter) throws Exception {
+	public static void addtrain(int id,int counter) throws Exception {
     	 Connection dbConn = null;
-    	 Timestamp d;
-    	 Timestamp s;
-    	 Timestamp current;
-    	 Timestamp current1;
-    	 String train;
+    	 Timestamp d,s,current;
+    	
     	 Date date = new Date();
     	 String query;
     	 int kat;
@@ -107,39 +104,29 @@ public class DBConnection {
              dbConn = DBConnection.createConnection();
              d=getPrevious(id);
              s=getPrevious(id);
-             s.setMinutes(s.getMinutes()+30);
+            
              current= new Timestamp(date.getTime());  
             
             if(current.before(d)){
             	String k = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(s);
-                query = "INSERT INTO training(userid,Start,Stop,tuxaiosarithmos) VALUES('"+id+"','"+d+"','"+k+"','"+kat+"')";
-                train="User with id:" +id+" added train From:"+d+" To:"+s;
-               
+                query = "INSERT INTO training(userid,Start,Stop,tuxaiosarithmos) VALUES('"+id+"','"+d+"','"+k+"'+ INTERVAL 30 MINUTE,'"+kat+"')";              
                 Statement stmt = dbConn.createStatement();
                 stmt.executeUpdate(query);
-                
                 query = "SELECT id FROM training WHERE userid='"+id+"' AND stop='"+k+"'";
-                
                 stmt = dbConn.createStatement();
                 ResultSet rs =stmt.executeQuery(query);
                 rs.next();
                 int temp = rs.getInt("id");
                 query="CREATE EVENT event"+id+temp+" ON SCHEDULE AT '"+k+"' DO UPDATE dokimastiko.training SET finishedtime='"+k+"' WHERE userid='"+id+"' AND id='"+temp+"'";
-              
                 stmt = dbConn.createStatement();
                 stmt.executeUpdate(query);
             }else{
             	query = "INSERT INTO training(userid,Start,Stop) VALUES('"+id+"',NOW(), NOW()+INTERVAL 30 MINUTE)";
-            	 current1 = new Timestamp(date.getTime());
-                 current1.setMinutes(current.getMinutes()+30);
-            	 train="User with id:" +id+" added train From:"+current+" To:"+current1;
-              
                 Statement stmt = dbConn.createStatement();
                 stmt.executeUpdate(query);
                 query = "SELECT id FROM training WHERE userid='"+id+"' AND stop=NOW()+INTERVAL 30 MINUTE";
-               
                 stmt = dbConn.createStatement();
-               ResultSet rs =stmt.executeQuery(query);
+                ResultSet rs =stmt.executeQuery(query);
                
                int temp = rs.getInt("id");
                query="CREATE EVENT event"+id+temp+"ON SCHEDULE AT NOW()+INTERVAL 30 MINUTE DO UPDATE dokimastiko.training SET finishedtime=NOW() WHERE userid='"+id+"' AND id='"+temp;
@@ -163,7 +150,7 @@ public class DBConnection {
              dbConn.close();
          }
      }
-    	 return train;
+    
     }
     public static Timestamp getPrevious(int id){
     	Connection dbConn = null;
@@ -296,30 +283,28 @@ public class DBConnection {
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
     	System.out.println("Inside AlterTable pos:"+pos);
-    	
+    	String query;
           for(int i=pos; i<temp-1;i++){
     		System.out.println("Inside AlterTable:"+i);
     		if(pos==0){
     			if(i==1){    				
-    			String query="UPDATE training SET start=NOW(),stop= NOW()+INTERVAL 30 MINUTE WHERE id='"+id.get(i+1)+"'";
+    			query="UPDATE training SET start=NOW(),stop= NOW()+INTERVAL 30 MINUTE WHERE id='"+id.get(i+1)+"'";
     			System.out.println(query);
-    			Statement stmt = dbConn.createStatement();
-    			stmt.executeUpdate(query);
-    			}else {
+    		
+    			}else{
     				
-    				String query="UPDATE training SET start='"+getPrevious(id.get(i))+"',stop= '"+getPrevious(id.get(i))+"'+INTERVAL 30 MINUTE WHERE id='"+id.get(i+1)+"'";
+    				query="UPDATE training SET start='"+getPrevious(id.get(i))+"',stop= '"+getPrevious(id.get(i))+"'+INTERVAL 30 MINUTE WHERE id='"+id.get(i+1)+"'";
     				System.out.println(query);
-    				Statement stmt = dbConn.createStatement();
-        			stmt.executeUpdate(query);
     				
     			}
-    		}else{ 			
-     		String query="UPDATE training SET start='"+start.get(i)+"',stop='"+stop.get(i)+"' WHERE id='"+id.get(i+1)+"'";
+    		}else{    		
+    	    query="UPDATE training SET start='"+start.get(i)+"',stop='"+stop.get(i)+"' WHERE id='"+id.get(i+1)+"'";
     		System.out.println(query);
-			Statement stmt = dbConn.createStatement();
-			stmt.executeUpdate(query);
+			
 			}
-    		
+    	System.out.println(query);
+		Statement stmt = dbConn.createStatement();
+		stmt.executeUpdate(query);
 			
     	  }
       
