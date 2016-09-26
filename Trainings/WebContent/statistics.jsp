@@ -1,8 +1,7 @@
-<%@page import="java.util.*"%>
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@page language="java" session="true" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-
-  <!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@page import="java.util.*"%>
+ <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -11,32 +10,32 @@
     <script>
    
     $( document ).ready(function() {
-    
+   
     	var data = [];
-    	var data2 = [];
-    	var data3 = [];
+    
     	<% int k =  (int)session.getAttribute("arithmos");%>
     	
-    	<% for(int i = 0;i<k;i++) { %>
+    	<% for(int i = 1;i<k+1;i++) { %>
     	
 
-    	data[<%= i %>] = ['<%= session.getAttribute("start"+i) %>','<%= session.getAttribute("stop"+i) %>'];
-    	data2[<%= i %>] = ['<%= session.getAttribute("rand"+i) %>'];
-    	data3[<%= i %>] = ['<%= session.getAttribute("id"+i) %>'];
+    	data[<%= i %>] = ['<%= session.getAttribute("count"+i) %>','<%= session.getAttribute("name"+i) %>','<%= session.getAttribute("email"+i) %>','<%= session.getAttribute("completed"+i) %>','<%= session.getAttribute("notcompleted"+i) %>','<%= session.getAttribute("last"+i) %>'];
     	
     	<%  } %>
     	
     	
     	
-    	var html = '<table><thead><tr></tr>Progrmmatismenes proponiseis omadas</thead><tbody>';
-    	for (var i = 0, len = data.length; i < len; ++i) {
-    	    html += '<tr><td><form action="CancelServlet" method="post"><a href=#>'+data2[i]+'</a></td>';
+    	var html = '<table><thead><tr></tr></thead><tbody>';
+    	
+    	for (var i = 1, len = data.length; i < len; ++i) {
+    		
+    	    html += '<tr>';
     	    for (var j = 0, rowLen = data[i].length; j < rowLen; ++j ) {
+    	    	
     	    	html += '<td>';
     	        html +=  data[i][j] ;
     	        html += '</td>';
     	    }
-    	    html += '<td><input type="submit" value="Akirosi" name="'+data3[i]+'"></form></td></tr>';
+    	    html += '</tr>';
     	}
     	html += '</tbody><tfoot><tr></tr></tfoot></table>';
 

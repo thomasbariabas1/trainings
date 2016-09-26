@@ -53,6 +53,16 @@
     <servlet-name>CancelServlet</servlet-name>  
     <url-pattern>/CancelServlet</url-pattern>  
   </servlet-mapping> 
+   <servlet>  
+    <description></description>  
+    <display-name>ShowStatistics</display-name>  
+    <servlet-name>ShowStatistics</servlet-name>  
+    <servlet-class>servlets.ShowStatistics</servlet-class>  
+  </servlet>  
+  <servlet-mapping>  
+    <servlet-name>ShowStatistics</servlet-name>  
+    <url-pattern>/ShowStatistics</url-pattern>  
+  </servlet-mapping>
  <listener>
         <listener-class>servlets.SessionListener</listener-class>
     </listener>

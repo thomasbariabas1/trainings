@@ -375,10 +375,85 @@ public class DBConnection {
     public static void cancelTable(int id) throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
-    	System.out.println("cancel table");
+    	
     	String query="UPDATE training SET finishedtime = NOW() WHERE id='"+id+"'";
 		Statement stmt = dbConn.createStatement();
 		stmt.executeUpdate(query);
+    }
+    public static int getUsers() throws Exception{
+    	Connection dbConn = null;
+    	dbConn = DBConnection.createConnection();
+    	
+    	String query="SELECT COUNT(*) AS count FROM users";
+		Statement stmt = dbConn.createStatement();
+		ResultSet rs=stmt.executeQuery(query);
+		rs.next();
+		int k = rs.getInt("count");
+    	return k;
+    }
+    public static String getName(int id) throws Exception{
+    	Connection dbConn = null;
+    	dbConn = DBConnection.createConnection();
+    
+    	String query="SELECT name  FROM users WHERE users.id='"+id+"'";
+		Statement stmt = dbConn.createStatement();
+		ResultSet rs=stmt.executeQuery(query);
+		rs.next();
+		String s=rs.getString("name");
+    	
+    	return s;
+    }
+    public static String getEmail(int id) throws Exception{
+    	Connection dbConn = null;
+    	dbConn = DBConnection.createConnection();
+    
+    	String query="SELECT email  FROM users WHERE users.id='"+id+"'";
+		Statement stmt = dbConn.createStatement();
+		ResultSet rs=stmt.executeQuery(query);
+		rs.next();
+		String s=rs.getString("email");
+    	
+    	return s;
+    }
+    public static int getCompleted(int id) throws Exception{
+    	Connection dbConn = null;
+    	dbConn = DBConnection.createConnection();
+    
+    	String query="SELECT COUNT(*) As count  FROM users,training WHERE users.id='"+id+"' AND training.stop=training.finishedtime";
+    	
+		Statement stmt = dbConn.createStatement();
+		ResultSet rs=stmt.executeQuery(query);
+		rs.next();
+		int s=rs.getInt("count");
+    	
+    	return s;
+    }
+    public static int getNotcompleted(int id) throws Exception{
+    	Connection dbConn = null;
+    	dbConn = DBConnection.createConnection();
+    
+    	String query="SELECT COUNT(*) As count  FROM users,training WHERE users.id='"+id+"' AND training.stop!=training.finishedtime AND training.stop!='0000-00-00 00:00:00'";
+    	
+		Statement stmt = dbConn.createStatement();
+		ResultSet rs=stmt.executeQuery(query);
+		rs.next();
+		int s=rs.getInt("count");
+    	
+    	return s;
+    }
+    
+    public static Timestamp getLastclick(int id) throws Exception{
+    	Connection dbConn = null;
+    	dbConn = DBConnection.createConnection();
+    	
+    	String query="SELECT teletaio  FROM users WHERE users.id='"+id+"' ";
+    	
+		Statement stmt = dbConn.createStatement();
+		ResultSet rs=stmt.executeQuery(query);
+		rs.next();
+		Timestamp s=rs.getTimestamp("teletaio");
+    	
+    	return s;
     }
  
 
