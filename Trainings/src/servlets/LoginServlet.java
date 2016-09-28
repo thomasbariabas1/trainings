@@ -21,7 +21,8 @@ import dbconnection.DBConnection;
 		
 		protected void doPost(HttpServletRequest request, HttpServletResponse response)  
                         throws ServletException, IOException {  
-			
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html");              
             PrintWriter out=response.getWriter(); 
           
@@ -49,7 +50,7 @@ import dbconnection.DBConnection;
             }  
             else{  
                 out.print("Sorry, username or password error!");  
-                request.getRequestDispatcher("index.jsp").include(request, response);  
+                request.getRequestDispatcher("index.html").include(request, response);  
             }  
             out.close();  
         }  

@@ -21,7 +21,7 @@ package servlets;
            
             session.invalidate(); 
           
-            request.getRequestDispatcher("index.jsp").include(request, response);
+            request.getRequestDispatcher("index.html").include(request, response);
             out.close();  
 		}
     }  

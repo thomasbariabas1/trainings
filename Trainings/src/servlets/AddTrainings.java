@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,10 +19,16 @@ public class AddTrainings extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)  
             throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html");
+		PrintWriter out=response.getWriter();
 		 DBConnection.lasttime(Integer.parseInt(LoginServlet.i));
 		int j;
 		j=DBConnection.getTrainings(Integer.valueOf(LoginServlet.i));
 		if(j==4){
+			
+			 out.print("<script> alert('Only 4 Active Trainings!');</script>"); 
 			 request.getRequestDispatcher("/Trainings").include(request, response);  
 		}else{
 		

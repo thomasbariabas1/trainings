@@ -169,7 +169,34 @@ public class DBConnection {
      }
     	 return train;
     }
-	
+ 
+    
+    //RETURN RANDOM WITH RANGE 1-1000
+    public static HashMap<String,Integer> getRnd(int id){
+    	HashMap<String,Integer> map= new HashMap<String,Integer>();
+    	Connection dbConn = null;
+    
+			try {
+				dbConn = DBConnection.createConnection();
+				String query = "SELECT id,tuxaiosarithmos FROM training WHERE userid='"+id+"' AND finishedtime='0000-00-00 00:00:00'";
+		        // System.out.println(query);
+		         Statement stmt = dbConn.createStatement();
+		         ResultSet rs = stmt.executeQuery(query);
+		         int i =0;
+		         while(rs.next()){
+		        	 //System.out.println("inside while");
+		        	 
+		        	 map.put("tuxaiosarithmos"+i, rs.getInt("tuxaiosarithmos"));
+		             map.put("id"+i, rs.getInt("id"));
+		        	 i++;
+		         }
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return map;  
+    }
+  
 	//GET THE PREVIOUS FROM LAST TRAINING
     public static Timestamp getPrevious(int id){
     	Connection dbConn = null;
@@ -247,40 +274,6 @@ public class DBConnection {
     	return map;
 		
     }
-    
-   
-    //CANCEL TRAINING AFTER INKOKING SERVLET
-    public static void cancelTrain(int userid,int trainid){
-    	ArrayList<Integer> id=new ArrayList<Integer>();
-    	ArrayList<Timestamp> start = new ArrayList<Timestamp>();
-    	ArrayList<Timestamp> stop = new ArrayList<Timestamp>();
-    	Connection dbConn = null;
-    	try {
-			dbConn = DBConnection.createConnection();
-			
-			String query="SELECT start,stop,id FROM training WHERE userid='"+userid+"' AND finishedtime='0000-00-00 00:00:00' ORDER BY stop ASC";
-			Statement stmt = dbConn.createStatement();
-			ResultSet rs =stmt.executeQuery(query);
-			
-			 while(rs.next()){
-				 
-				 id.add(rs.getInt("id"));
-				 start.add(rs.getTimestamp("start"));
-				 stop.add(rs.getTimestamp("stop"));
-			 }
-			 int k=getPosition(id,trainid);
-			    cancelTable(trainid);
-				alterTable(k,start,stop,id);       
-	       
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-    	
-}
-    
-    
     //KEEPER FOR EACH INTERACTION USER MAKE WITH SERVICE
     public static void lasttime(int id){
     	Connection dbConn = null;
@@ -298,46 +291,56 @@ public class DBConnection {
 				e.printStackTrace();
 			}
     }
-    
-    
-    //RETURN RANDOM WITH RANGE 1-1000
-    public static HashMap<String,Integer> getRnd(int id){
-    	HashMap<String,Integer> map= new HashMap<String,Integer>();
+   
+    //CANCEL TRAINING AFTER INKOKING SERVLET
+    public static void cancelTrain(int userid,int trainid){
+    	try {
+    	   int pos=getPosition(userid,trainid);
+			cancelTable(trainid);
+			alterTable(userid,pos);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     	Connection dbConn = null;
-    
-			try {
-				dbConn = DBConnection.createConnection();
-				String query = "SELECT id,tuxaiosarithmos FROM training WHERE userid='"+id+"' AND finishedtime='0000-00-00 00:00:00'";
-		         System.out.println(query);
-		         Statement stmt = dbConn.createStatement();
-		         ResultSet rs = stmt.executeQuery(query);
-		         int i =0;
-		         while(rs.next()){
-		        	 System.out.println("inside while");
-		        	 
-		        	 map.put("tuxaiosarithmos"+i, rs.getInt("tuxaiosarithmos"));
-		             map.put("id"+i, rs.getInt("id"));
-		        	 i++;
-		         }
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return map;  
-    }
-  
+    	try {
+			dbConn = DBConnection.createConnection();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+			   
+		
+		
+    	
+}       
+ 
+   
     //GET THE CORRENT POSISION OF THE DELETED TRAINING
-    public static int getPosition(ArrayList<Integer> id,int trainid){
-    	int k = id.size();
-    	 System.out.println("inside GET POSITION"+k);
-    	 for(int i=0;i<k;i++){
-    		 System.out.println("inside GET POSITION FOR"+i);
-			 if(trainid==id.get(i)){
-				 System.out.println("inside GET POSITION IF"+i);
-				return i;
-				}
-		 }
-    	return 0;
+    public static int getPosition(int id,int trainid){
+    	Connection dbConn = null;
+    	int i=0;
+    	try {
+			dbConn=DBConnection.createConnection();
+			Statement stmt = dbConn.createStatement();
+		    
+			String query = " SELECT rank FROM (SELECT @rank := @rank+1 AS rank,id FROM training,(SELECT @rank :=0) r  WHERE userid='"+id+"' AND finishedtime='0000-00-00 00:00:00' ORDER BY Stop DESC) AS rank WHERE id='"+trainid+"'"; 
+			
+			System.out.println(query);
+			ResultSet rs =stmt.executeQuery(query);
+			rs.next();
+			
+			i=rs.getInt("rank");
+    	} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+		return i;
+				
+		 
     }
     //RETURN USER ID WHILE SEARCHING WITH TRAINING ID
     public static int getUserID(int trainid) throws Exception{
@@ -354,35 +357,44 @@ public class DBConnection {
     
     
     //FUNCTION FOR ALTERATION TABLE ON CANCEL INVOKED
-    public static void alterTable(int pos,ArrayList<Timestamp> start,ArrayList<Timestamp> stop , ArrayList<Integer> id) throws Exception{
-    	int temp = id.size();
+    public static void alterTable(int userid,int pos) throws Exception{
+    	
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
-    	System.out.println("Inside AlterTable pos:"+pos);
     	String query;
-          for(int i=pos; i<temp-1;i++){
-    		System.out.println("Inside AlterTable:"+i);
-    		if(pos==0){
-    			if(i==1){    				
-    			query="UPDATE training SET start=NOW(),stop= NOW()+INTERVAL 30 MINUTE WHERE id='"+id.get(i+1)+"'";
-    			System.out.println(query);
+        int count;
+       
+    		count= getTrainings(userid);
     		
-    			}else{
-    				
-    				query="UPDATE training SET start='"+getPrevious(id.get(i))+"',stop= '"+getPrevious(id.get(i))+"'+INTERVAL 30 MINUTE WHERE id='"+id.get(i+1)+"'";
-    				System.out.println(query);
-    				
+    		for(int i = pos-1;i>0;i--){
+    		if(count==pos){
+    			
+    			if(i==pos-1){	
+    			query="UPDATE training SET start=NOW(),stop= NOW()+INTERVAL 30 MINUTE WHERE id='(SELECT id FROM training WHERE userid='"+userid+"' AND finishedtime='0000-00-00 00:00:00' ORDER BY stop DESC LIMIT 1)'";
+    			System.out.println(query);
     			}
-    		}else{    		
-    	    query="UPDATE training SET start='"+start.get(i)+"',stop='"+stop.get(i)+"' WHERE id='"+id.get(i+1)+"'";
+    			query="UPDATE training SET start='"+getPrevious(userid)+"',stop= '"+getPrevious(userid)+"'+INTERVAL 30 MINUTE WHERE id=(SET @rank=0;SELECT id FROM (SELECT @rank := @rank+1 AS rank,id FROM training WHERE userid='"+userid+"' AND finishedtime='0000-00-00 00:00:00' ORDER BY Stop DESC) AS rank WHERE rank='"+i+"')";
+    			System.out.println(query);
+    			
+    			
+    		}else{
+    			
+    			query="UPDATE training SET start='"+getPrevious(userid)+"',stop= '"+getPrevious(userid)+"'+INTERVAL 30 MINUTE WHERE id=(SET @rank=0;SELECT id FROM (SELECT @rank := @rank+1 AS rank,id FROM training WHERE userid='"+userid+"' AND finishedtime='0000-00-00 00:00:00' ORDER BY Stop DESC) AS rank WHERE rank='"+i+"')";
+    			System.out.println(query);
+    		}
+    		}		
+    				
+    				
+    		   		
+    	    query="UPDATE training SET start='"+getPrevious(userid)+"',stop= '"+getPrevious(userid)+"'+INTERVAL 30 MINUTE WHERE id='"+userid+"'";
     		System.out.println(query);
 			
-			}
+			
     	System.out.println(query);
 		Statement stmt = dbConn.createStatement();
 		stmt.executeUpdate(query);
 			
-    	  }
+    	
       
     	
     }
@@ -397,7 +409,7 @@ public class DBConnection {
 		stmt.executeUpdate(query);
     }
     
-    //RETURN THE NUBER OF USERS
+    //RETURN THE NUMBER OF USERS
     public static int getUsers() throws Exception{
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
@@ -441,13 +453,15 @@ public class DBConnection {
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
     
-    	String query="SELECT COUNT(*) As count  FROM users,training WHERE users.id='"+id+"' AND training.stop=training.finishedtime";
+    	String query="SELECT COUNT(*) As count  FROM users,training WHERE users.id='"+id+"' AND users.id=training.userid  AND training.stop=training.finishedtime";
     	
 		Statement stmt = dbConn.createStatement();
 		ResultSet rs=stmt.executeQuery(query);
 		rs.next();
 		int s=rs.getInt("count");
-    	
+		System.out.println(query);
+    	System.out.println("TRAININGS:"+s);
+    
     	return s;
     }
     //RETURN THE CANCELED TRANINGS OF THE USER
@@ -455,12 +469,14 @@ public class DBConnection {
     	Connection dbConn = null;
     	dbConn = DBConnection.createConnection();
     
-    	String query="SELECT COUNT(*) As count  FROM users,training WHERE users.id='"+id+"' AND training.stop!=training.finishedtime AND training.stop!='0000-00-00 00:00:00'";
+    	String query="SELECT COUNT(*) As count  FROM users,training WHERE users.id='"+id+"' AND users.id=training.userid  AND training.stop!=training.finishedtime AND training.stop!='0000-00-00 00:00:00'";
     	
 		Statement stmt = dbConn.createStatement();
 		ResultSet rs=stmt.executeQuery(query);
 		rs.next();
 		int s=rs.getInt("count");
+		System.out.println(query);
+		System.out.println("NOT TRAININGS:"+s);
     	
     	return s;
     }
